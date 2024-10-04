@@ -2,7 +2,7 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
-const gameName = "My first cmpm 121 game";
+const gameName = "Teddy Tycoon";
 
 document.title = gameName;
 
@@ -16,45 +16,77 @@ let counter: number = 0;
 //create div to display counter
 const counterDiv = document.createElement("div");
 counterDiv.id = "counter";
-counterDiv.textContent = `${counter} Vine Booms`;
+counterDiv.textContent = `${counter} Teddy Bears`;
 app.append(counterDiv);
 
 //create button element
 const button = document.createElement("button");
 //set button text
-button.textContent = "💀";
-button.id = "skull-button";
+button.textContent = "🧸";
+button.id = "teddy-button";
 app.append(button);
 //add listening event
 button.addEventListener("click", () => {
   counter++;
-  counterDiv.textContent = `${counter} Vine Booms`;
-  checkUpgradeButton();
+  counterDiv.textContent = `${counter} Teddy Bears`;
+  checkUpgradeButtons();
 });
 
+//create growth rate
 let growthRate: number = 0;
+//list upgrades
+const upgrades = [
+  { name: "Teddy Poacher 🕵️", cost: 10, rate: 0.1, count: 0 },
+  { name: "Teddy Factory 🏭", cost: 100, rate: 2.0, count: 0 },
+  { name: "Teddy Amusement Park 🎡", cost: 1000, rate: 50, count: 0 },
+];
 
-//create button element
-const upgradeButton = document.createElement("button");
-//set button text
-upgradeButton.textContent = "Upgrade";
-upgradeButton.id = "upgrade-button";
-app.append(upgradeButton);
-//add listening event
-upgradeButton.addEventListener("click", () => {
-  if (counter >= 10) {
-    counter -= 10;
-    growthRate++;
-    counterDiv.textContent = `${counter} Vine Booms`;
-    checkUpgradeButton();
-  }
+//create growth rate div
+const growthRateDiv = document.createElement("div");
+growthRateDiv.id = "growth-rate";
+growthRateDiv.textContent = `Growth Rate: ${growthRate} Teddy Bears/second`;
+app.append(growthRateDiv);
+
+const upgradeContainer = document.createElement("div");
+upgradeContainer.id = "upgrade-container";
+app.append(upgradeContainer);
+
+//make buttons for each upgrade
+upgrades.forEach((upgrade, index) => {
+  const upgradeButton = document.createElement("button");
+  upgradeButton.textContent = `Buy ${upgrade.name} (${upgrade.cost} units)`;
+  upgradeButton.id = `upgrade-button-${index}`;
+  upgradeButton.disabled = true;
+  upgradeContainer.append(upgradeButton);
+
+  const upgradeCountDiv = document.createElement("div");
+  upgradeCountDiv.id = `upgrade-count-${index}`;
+  upgradeCountDiv.textContent = `${upgrade.name} Count: ${upgrade.count}`;
+  upgradeContainer.append(upgradeCountDiv);
+
+  upgradeButton.addEventListener("click", () => {
+    if (counter >= upgrade.cost) {
+      counter -= upgrade.cost;
+      growthRate += upgrade.rate;
+      upgrade.count++;
+      counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
+      growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} Teddy Bears/sec`;
+      upgradeCountDiv.textContent = `${upgrade.name} Count: ${upgrade.count}`;
+      checkUpgradeButtons();
+    }
+  });
 });
 
-function checkUpgradeButton() {
-  upgradeButton.disabled = counter < 10;
+function checkUpgradeButtons() {
+  upgrades.forEach((upgrade, index) => {
+    const upgradeButton = document.querySelector(
+      `#upgrade-button-${index}`
+    ) as HTMLButtonElement;
+    upgradeButton.disabled = counter < upgrade.cost;
+  });
 }
 
-checkUpgradeButton();
+checkUpgradeButtons();
 
 //Increment counter based on animation frame
 let lastTime = performance.now();
@@ -66,9 +98,9 @@ function updateCounter(currentTime: number) {
   //increment counter by the time passed
   counter += (deltaTime / 1000) * growthRate;
 
-  counterDiv.textContent = `${Math.floor(counter)} Vine Booms`;
+  counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
 
-  checkUpgradeButton();
+  checkUpgradeButtons();
 
   requestAnimationFrame(updateCounter);
 }
