@@ -35,14 +35,14 @@ button.addEventListener("click", () => {
 let lastTime = performance.now();
 
 function updateCounter(currentTime: number) {
-    const deltaTime = currentTime - lastTime;
-    lastTime = currentTime;
+  const deltaTime = currentTime - lastTime;
+  lastTime = currentTime;
 
-    //increment counter by the time passed
-    counter += deltaTime / 1000;
-    counterDiv.textContent = `${Math.floor(counter)} Vine Booms`;
+  //increment counter by the time passed
+  counter += deltaTime / 1000;
+  counterDiv.textContent = `${Math.floor(counter)} Vine Booms`;
 
-    requestAnimationFrame(updateCounter);
+  requestAnimationFrame(updateCounter);
 }
 
 //start animation loop
