@@ -10,51 +10,53 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
-//create counter
+// Create counter
 let counter: number = 0;
 
-//create div to display counter
+// Create div to display counter
 const counterDiv = document.createElement("div");
 counterDiv.id = "counter";
 counterDiv.textContent = `${counter} Teddy Bears`;
 app.append(counterDiv);
 
-//create button element
+// Create button element
 const button = document.createElement("button");
-//set button text
+// Set button text
 button.textContent = "🧸";
 button.id = "teddy-button";
 app.append(button);
-//add listening event
+// Add listening event
 button.addEventListener("click", () => {
   counter++;
   counterDiv.textContent = `${counter} Teddy Bears`;
   checkUpgradeButtons();
 });
 
-//create growth rate
 let growthRate: number = 0;
-//list upgrades
 const upgrades = [
-  { name: "Teddy Poacher 🕵️", cost: 10, rate: 0.1, count: 0 },
-  { name: "Teddy Factory 🏭", cost: 100, rate: 2.0, count: 0 },
-  { name: "Teddy Amusement Park 🎡", cost: 1000, rate: 50, count: 0 },
+  { name: "A", cost: 10, rate: 0.1, count: 0, currentCost: 10 },
+  { name: "B", cost: 100, rate: 2.0, count: 0, currentCost: 100 },
+  { name: "C", cost: 1000, rate: 50, count: 0, currentCost: 1000 },
 ];
 
-//create growth rate div
 const growthRateDiv = document.createElement("div");
 growthRateDiv.id = "growth-rate";
-growthRateDiv.textContent = `Growth Rate: ${growthRate} Teddy Bears/second`;
+growthRateDiv.textContent = `Growth Rate: ${growthRate} Teddy Bears/sec`;
 app.append(growthRateDiv);
 
 const upgradeContainer = document.createElement("div");
 upgradeContainer.id = "upgrade-container";
 app.append(upgradeContainer);
 
-//make buttons for each upgrade
+function formatCost(cost: number): string {
+  return cost % 1 === 0
+    ? cost.toString()
+    : cost.toFixed(2).replace(/\.?0+$/, "");
+}
+
 upgrades.forEach((upgrade, index) => {
   const upgradeButton = document.createElement("button");
-  upgradeButton.textContent = `Buy ${upgrade.name} (${upgrade.cost} units)`;
+  upgradeButton.textContent = `Buy ${upgrade.name} (${formatCost(upgrade.currentCost)} units)`;
   upgradeButton.id = `upgrade-button-${index}`;
   upgradeButton.disabled = true;
   upgradeContainer.append(upgradeButton);
@@ -65,13 +67,15 @@ upgrades.forEach((upgrade, index) => {
   upgradeContainer.append(upgradeCountDiv);
 
   upgradeButton.addEventListener("click", () => {
-    if (counter >= upgrade.cost) {
-      counter -= upgrade.cost;
+    if (counter >= upgrade.currentCost) {
+      counter -= upgrade.currentCost;
       growthRate += upgrade.rate;
       upgrade.count++;
+      upgrade.currentCost *= 1.15;
       counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
       growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} Teddy Bears/sec`;
       upgradeCountDiv.textContent = `${upgrade.name} Count: ${upgrade.count}`;
+      upgradeButton.textContent = `Buy ${upgrade.name} (${formatCost(upgrade.currentCost)} units)`;
       checkUpgradeButtons();
     }
   });
@@ -79,31 +83,31 @@ upgrades.forEach((upgrade, index) => {
 
 function checkUpgradeButtons() {
   upgrades.forEach((upgrade, index) => {
-    const upgradeButton = document.querySelector(
-      `#upgrade-button-${index}`
+    const upgradeButton = document.getElementById(
+      `upgrade-button-${index}`
     ) as HTMLButtonElement;
-    upgradeButton.disabled = counter < upgrade.cost;
+    upgradeButton.disabled = counter < upgrade.currentCost;
   });
 }
 
 checkUpgradeButtons();
 
-//Increment counter based on animation frame
+// Increment counter based on animation frame
 let lastTime = performance.now();
 
 function updateCounter(currentTime: number) {
   const deltaTime = currentTime - lastTime;
   lastTime = currentTime;
 
-  //increment counter by the time passed
-  counter += (deltaTime / 1000) * growthRate;
-
+  // Increment counter based on growth rate and deltaTime
+  counter += growthRate * (deltaTime / 1000);
   counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
 
+  // Check if the upgrade buttons should be enabled
   checkUpgradeButtons();
 
   requestAnimationFrame(updateCounter);
 }
 
-//start animation loop
+// Start the animation frame loop
 requestAnimationFrame(updateCounter);
