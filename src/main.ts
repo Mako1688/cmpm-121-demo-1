@@ -29,7 +29,32 @@ app.append(button);
 button.addEventListener("click", () => {
   counter++;
   counterDiv.textContent = `${counter} Vine Booms`;
+  checkUpgradeButton();
 });
+
+let growthRate: number = 0;
+
+//create button element
+const upgradeButton = document.createElement("button");
+//set button text
+upgradeButton.textContent = "Upgrade";
+upgradeButton.id = "upgrade-button";
+app.append(upgradeButton);
+//add listening event
+upgradeButton.addEventListener("click", () => {
+  if (counter >= 10) {
+    counter -= 10;
+    growthRate++;
+    counterDiv.textContent = `${counter} Vine Booms`;
+    checkUpgradeButton();
+  }
+});
+
+function checkUpgradeButton() {
+  upgradeButton.disabled = counter < 10;;
+}
+
+checkUpgradeButton();
 
 //Increment counter based on animation frame
 let lastTime = performance.now();
@@ -39,8 +64,11 @@ function updateCounter(currentTime: number) {
   lastTime = currentTime;
 
   //increment counter by the time passed
-  counter += deltaTime / 1000;
+  counter += (deltaTime / 1000) * growthRate;
+
   counterDiv.textContent = `${Math.floor(counter)} Vine Booms`;
+
+  checkUpgradeButton();
 
   requestAnimationFrame(updateCounter);
 }
