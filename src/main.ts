@@ -30,3 +30,9 @@ button.addEventListener("click", () => {
   counter++;
   counterDiv.textContent = `${counter} Vine Booms`;
 });
+
+//Increment counter every second
+setInterval(() => {
+  counter++;
+  counterDiv.textContent = `${counter} Vine Booms`;
+}, 1000);
