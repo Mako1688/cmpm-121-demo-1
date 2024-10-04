@@ -51,7 +51,7 @@ upgradeButton.addEventListener("click", () => {
 });
 
 function checkUpgradeButton() {
-  upgradeButton.disabled = counter < 10;;
+  upgradeButton.disabled = counter < 10;
 }
 
 checkUpgradeButton();
