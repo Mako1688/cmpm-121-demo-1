@@ -31,8 +31,19 @@ button.addEventListener("click", () => {
   counterDiv.textContent = `${counter} Vine Booms`;
 });
 
-//Increment counter every second
-setInterval(() => {
-  counter++;
-  counterDiv.textContent = `${counter} Vine Booms`;
-}, 1000);
+//Increment counter based on animation frame
+let lastTime = performance.now();
+
+function updateCounter(currentTime: number) {
+    const deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+
+    //increment counter by the time passed
+    counter += deltaTime / 1000;
+    counterDiv.textContent = `${Math.floor(counter)} Vine Booms`;
+
+    requestAnimationFrame(updateCounter);
+}
+
+//start animation loop
+requestAnimationFrame(updateCounter);
