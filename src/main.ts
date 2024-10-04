@@ -33,10 +33,36 @@ button.addEventListener("click", () => {
 });
 
 let growthRate: number = 0;
-const upgrades = [
-  { name: "A", cost: 10, rate: 0.1, count: 0, currentCost: 10 },
-  { name: "B", cost: 100, rate: 2.0, count: 0, currentCost: 100 },
-  { name: "C", cost: 1000, rate: 50, count: 0, currentCost: 1000 },
+
+interface Item {
+  name: string;
+  cost: number;
+  rate: number;
+  count: number;
+  currentCost: number;
+}
+const upgrades: Item[] = [
+  {
+    name: "Teddy Poacher 🕵️",
+    cost: 10,
+    rate: 0.1,
+    count: 0,
+    currentCost: 10,
+  },
+  {
+    name: "Teddy Factory 🏭",
+    cost: 100,
+    rate: 2.0,
+    count: 0,
+    currentCost: 100,
+  },
+  {
+    name: "Teddy Amusement Park 🎡",
+    cost: 1000,
+    rate: 50,
+    count: 0,
+    currentCost: 1000,
+  },
 ];
 
 const growthRateDiv = document.createElement("div");
@@ -84,7 +110,7 @@ upgrades.forEach((upgrade, index) => {
 function checkUpgradeButtons() {
   upgrades.forEach((upgrade, index) => {
     const upgradeButton = document.getElementById(
-      `upgrade-button-${index}`,
+      `upgrade-button-${index}`
     ) as HTMLButtonElement;
     upgradeButton.disabled = counter < upgrade.currentCost;
   });
