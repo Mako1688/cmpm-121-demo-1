@@ -2,7 +2,7 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
-const gameName = "Teddy Tycoon";
+const gameName = "🧸Teddy Tycoon🧸";
 
 document.title = gameName;
 
@@ -12,26 +12,6 @@ app.append(header);
 
 // Create counter
 let counter: number = 0;
-
-// Create div to display counter
-const counterDiv = document.createElement("div");
-counterDiv.id = "counter";
-counterDiv.textContent = `${counter} Teddy Bears`;
-app.append(counterDiv);
-
-// Create button element
-const button = document.createElement("button");
-// Set button text
-button.textContent = "🧸";
-button.id = "teddy-button";
-app.append(button);
-// Add listening event
-button.addEventListener("click", () => {
-  counter++;
-  counterDiv.textContent = `${counter} Teddy Bears`;
-  checkUpgradeButtons();
-});
-
 let growthRate: number = 0;
 
 interface Item {
@@ -63,12 +43,46 @@ const upgrades: Item[] = [
     count: 0,
     currentCost: 1000,
   },
+  {
+    name: "TeddyVille, USA 🦅",
+    cost: 10000,
+    rate: 500,
+    count: 0,
+    currentCost: 10000,
+  },
+  {
+    name: "Planet Teddy 🪐",
+    cost: 100000,
+    rate: 50000,
+    count: 0,
+    currentCost: 100000,
+  },
 ];
+
+// Create div to display counter
+const counterDiv = document.createElement("div");
+counterDiv.id = "counter";
+counterDiv.textContent = `${counter} Teddy Bears`;
+app.append(counterDiv);
 
 const growthRateDiv = document.createElement("div");
 growthRateDiv.id = "growth-rate";
 growthRateDiv.textContent = `Growth Rate: ${growthRate} Teddy Bears/sec`;
 app.append(growthRateDiv);
+
+// Create button element
+const button = document.createElement("button");
+// Set button text
+button.textContent = "🧸";
+button.id = "teddy-button";
+button.classList.add("teddy-button"); // apply CSS class
+app.append(button);
+// Add listening event
+button.addEventListener("click", () => {
+  counter++;
+  counterDiv.textContent = `${counter} Teddy Bears`;
+  checkUpgradeButtons();
+});
 
 const upgradeContainer = document.createElement("div");
 upgradeContainer.id = "upgrade-container";
@@ -82,7 +96,7 @@ function formatCost(cost: number): string {
 
 upgrades.forEach((upgrade, index) => {
   const upgradeButton = document.createElement("button");
-  upgradeButton.textContent = `Buy ${upgrade.name} (${formatCost(upgrade.currentCost)} units)`;
+  upgradeButton.textContent = `Buy ${upgrade.name} (${formatCost(upgrade.currentCost)} Teddy Bears)`;
   upgradeButton.id = `upgrade-button-${index}`;
   upgradeButton.disabled = true;
   upgradeContainer.append(upgradeButton);
@@ -101,7 +115,7 @@ upgrades.forEach((upgrade, index) => {
       counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
       growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} Teddy Bears/sec`;
       upgradeCountDiv.textContent = `${upgrade.name} Count: ${upgrade.count}`;
-      upgradeButton.textContent = `Buy ${upgrade.name} (${formatCost(upgrade.currentCost)} units)`;
+      upgradeButton.textContent = `Buy ${upgrade.name} (${formatCost(upgrade.currentCost)} Teddy Bears)`;
       checkUpgradeButtons();
     }
   });
