@@ -110,7 +110,7 @@ upgrades.forEach((upgrade, index) => {
 function checkUpgradeButtons() {
   upgrades.forEach((upgrade, index) => {
     const upgradeButton = document.getElementById(
-      `upgrade-button-${index}`
+      `upgrade-button-${index}`,
     ) as HTMLButtonElement;
     upgradeButton.disabled = counter < upgrade.currentCost;
   });
