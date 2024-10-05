@@ -91,7 +91,7 @@ app.append(upgradeContainer);
 function formatCost(cost: number): string {
   return cost % 1 === 0
     ? cost.toString()
-    : cost.toFixed(2).replace(/\.?0+$/, "");
+    : cost.toFixed(1).replace(/\.?0+$/, "");
 }
 
 upgrades.forEach((upgrade, index) => {
