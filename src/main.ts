@@ -20,6 +20,7 @@ interface Item {
   rate: number;
   count: number;
   currentCost: number;
+  description: string;
 }
 const upgrades: Item[] = [
   {
@@ -28,6 +29,7 @@ const upgrades: Item[] = [
     rate: 0.1,
     count: 0,
     currentCost: 10,
+    description: "Hire a Teddy Poacher to capture wild Teddy Bears",
   },
   {
     name: "Teddy Factory 🏭",
@@ -35,6 +37,7 @@ const upgrades: Item[] = [
     rate: 2.0,
     count: 0,
     currentCost: 100,
+    description: "Build a Teddy Factory to mass produce Teddy Bears",
   },
   {
     name: "Teddy Amusement Park 🎡",
@@ -42,6 +45,7 @@ const upgrades: Item[] = [
     rate: 50,
     count: 0,
     currentCost: 1000,
+    description: "Open a Teddy Amusement Park to attract to donate Teddy Bears",
   },
   {
     name: "TeddyVille, USA 🦅",
@@ -49,6 +53,7 @@ const upgrades: Item[] = [
     rate: 500,
     count: 0,
     currentCost: 10000,
+    description: "Found a Teddy Bear city to increase Teddy Bear population",
   },
   {
     name: "Planet Teddy 🪐",
@@ -56,6 +61,23 @@ const upgrades: Item[] = [
     rate: 50000,
     count: 0,
     currentCost: 100000,
+    description: "Colonize a planet to increase Teddy Bear discovery"
+  },
+  {
+    name: "Teddy Universe 🌌",
+    cost: 10000000,
+    rate: 500000,
+    count: 0,
+    currentCost: 10000000,
+    description: "Create a Teddy Universe full of Teddy Bears"
+  },
+  {
+    name: "God of Teddy Bears 🐻‍❄️",
+    cost: 1000000000,
+    rate: 5000000,
+    count: 0,
+    currentCost: 1000000000,
+    description: "Recruit the God of Teddy Bears and use it's power"
   },
 ];
 
@@ -95,16 +117,28 @@ function formatCost(cost: number): string {
 }
 
 upgrades.forEach((upgrade, index) => {
+  const upgradeRow = document.createElement("div");
+  upgradeRow.classList.add("upgrade-row");
+  upgradeContainer.append(upgradeRow);
+
   const upgradeButton = document.createElement("button");
   upgradeButton.textContent = `Buy ${upgrade.name} (${formatCost(upgrade.currentCost)} Teddy Bears)`;
   upgradeButton.id = `upgrade-button-${index}`;
+  upgradeButton.classList.add("upgrade-button"); // apply CSS class
   upgradeButton.disabled = true;
-  upgradeContainer.append(upgradeButton);
+  upgradeRow.append(upgradeButton);
 
   const upgradeCountDiv = document.createElement("div");
   upgradeCountDiv.id = `upgrade-count-${index}`;
+  upgradeCountDiv.classList.add("upgrade-count"); // apply CSS class
   upgradeCountDiv.textContent = `${upgrade.name} Count: ${upgrade.count}`;
-  upgradeContainer.append(upgradeCountDiv);
+  upgradeRow.append(upgradeCountDiv);
+
+  const upgradeDescriptionDiv = document.createElement("div");
+  upgradeDescriptionDiv.id = `upgrade-description-${index}`;
+  upgradeDescriptionDiv.classList.add("upgrade-description"); // apply CSS class
+  upgradeDescriptionDiv.textContent = upgrade.description;
+  upgradeRow.append(upgradeDescriptionDiv);
 
   upgradeButton.addEventListener("click", () => {
     if (counter >= upgrade.currentCost) {
@@ -123,9 +157,7 @@ upgrades.forEach((upgrade, index) => {
 
 function checkUpgradeButtons() {
   upgrades.forEach((upgrade, index) => {
-    const upgradeButton = document.getElementById(
-      `upgrade-button-${index}`,
-    ) as HTMLButtonElement;
+    const upgradeButton = document.getElementById(`upgrade-button-${index}`) as HTMLButtonElement;
     upgradeButton.disabled = counter < upgrade.currentCost;
   });
 }

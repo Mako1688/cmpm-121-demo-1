@@ -81,3 +81,26 @@ button:focus-visible {
   font-size: 80px; /* Adjust the font size as needed */
   text-align: center;
 }
+
+#upgrade-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Optional: Add some space between the upgrade rows */
+}
+
+.upgrade-row {
+  display: grid;
+  grid-template-columns: auto 1fr 2fr; /* Adjust the column widths as needed */
+  align-items: center;
+  gap: 10px; /* Optional: Add some space between elements in the row */
+}
+
+.upgrade-button {
+  min-width: 150px; /* Adjust the minimum width as needed */
+  text-align: center;
+}
+
+.upgrade-count,
+.upgrade-description {
+  text-align: left; /* Align text to the left */
+}
