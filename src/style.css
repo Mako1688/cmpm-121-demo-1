@@ -104,3 +104,9 @@ button:focus-visible {
 .upgrade-description {
   text-align: left; /* Align text to the left */
 }
+
+.golden-teddy {
+  cursor: pointer;
+  z-index: 1000; /* Ensure it appears above other elements */
+  color: gold; /* Apply yellow tint */
+}

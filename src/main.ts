@@ -164,6 +164,42 @@ function checkUpgradeButtons() {
 
 checkUpgradeButtons();
 
+// Function to spawn a golden teddy bear
+function spawnGoldenTeddy() {
+  const goldenTeddy = document.createElement("div");
+  goldenTeddy.classList.add("golden-teddy");
+  goldenTeddy.innerHTML = "🧸"; // Use only the teddy emoji
+  goldenTeddy.style.position = "absolute";
+  goldenTeddy.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
+  goldenTeddy.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+  goldenTeddy.style.fontSize = "50px";
+  goldenTeddy.style.transition = "opacity 3s";
+  goldenTeddy.style.opacity = "1";
+  app.append(goldenTeddy);
+
+  // Event listener for clicking the golden teddy
+  goldenTeddy.addEventListener("click", () => {
+    counter += 100 * growthRate;
+    counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
+    goldenTeddy.remove();
+  });
+
+  // Make the golden teddy fade out and disappear
+  setTimeout(() => {
+    goldenTeddy.style.opacity = "0";
+    setTimeout(() => {
+      goldenTeddy.remove();
+    }, 3000);
+  }, 3000);
+}
+
+// Function to randomly spawn a golden teddy bear
+function maybeSpawnGoldenTeddy() {
+  if (Math.random() < 0.001) { // 1% chance to spawn a golden teddy
+    spawnGoldenTeddy();
+  }
+}
+
 // Increment counter based on animation frame
 let lastTime = performance.now();
 
@@ -177,6 +213,9 @@ function updateCounter(currentTime: number) {
 
   // Check if the upgrade buttons should be enabled
   checkUpgradeButtons();
+
+  // Maybe spawn a golden teddy bear
+  maybeSpawnGoldenTeddy();
 
   requestAnimationFrame(updateCounter);
 }
