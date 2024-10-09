@@ -61,7 +61,7 @@ const upgrades: Item[] = [
     rate: 50000,
     count: 0,
     currentCost: 100000,
-    description: "Colonize a planet to increase Teddy Bear discovery"
+    description: "Colonize a planet to increase Teddy Bear discovery",
   },
   {
     name: "Teddy Universe 🌌",
@@ -69,7 +69,7 @@ const upgrades: Item[] = [
     rate: 500000,
     count: 0,
     currentCost: 10000000,
-    description: "Create a Teddy Universe full of Teddy Bears"
+    description: "Create a Teddy Universe full of Teddy Bears",
   },
   {
     name: "God of Teddy Bears 🐻‍❄️",
@@ -77,7 +77,7 @@ const upgrades: Item[] = [
     rate: 5000000,
     count: 0,
     currentCost: 1000000000,
-    description: "Recruit the God of Teddy Bears and use it's power"
+    description: "Recruit the God of Teddy Bears and use it's power",
   },
 ];
 
@@ -157,7 +157,9 @@ upgrades.forEach((upgrade, index) => {
 
 function checkUpgradeButtons() {
   upgrades.forEach((upgrade, index) => {
-    const upgradeButton = document.getElementById(`upgrade-button-${index}`) as HTMLButtonElement;
+    const upgradeButton = document.getElementById(
+      `upgrade-button-${index}`,
+    ) as HTMLButtonElement;
     upgradeButton.disabled = counter < upgrade.currentCost;
   });
 }
@@ -195,7 +197,8 @@ function spawnGoldenTeddy() {
 
 // Function to randomly spawn a golden teddy bear
 function maybeSpawnGoldenTeddy() {
-  if (Math.random() < 0.001) { // 1% chance to spawn a golden teddy
+  if (Math.random() < 0.005) {
+    // 1% chance to spawn a golden teddy
     spawnGoldenTeddy();
   }
 }
