@@ -181,7 +181,7 @@ function spawnGoldenTeddy() {
 
   // Event listener for clicking the golden teddy
   goldenTeddy.addEventListener("click", () => {
-    counter += 100 * growthRate;
+    counter += 10 * growthRate;
     counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
     goldenTeddy.remove();
   });
