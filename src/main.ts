@@ -119,7 +119,7 @@ function purchaseUpgrade(upgrade: Item) {
   counter -= upgrade.currentCost;
   growthRate += upgrade.rate;
   upgrade.count++;
-  upgrade.currentCost *= Math.round(upgrade.currentCost * 1.15);
+  upgrade.currentCost = Math.round(upgrade.currentCost * 1.15);
 }
 
 // Update UI after purchasing an upgrade
