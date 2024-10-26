@@ -114,22 +114,12 @@ const upgradeContainer = document.createElement("div");
 upgradeContainer.id = "upgrade-container";
 app.append(upgradeContainer);
 
-// Format cost to remove trailing zeros
-function formatCost(cost: number): string {
-  return cost % 1 === 0 ? cost.toString() : cost.toFixed(0).replace(/\.?0+$/, "");
-}
-
-// Check if the player can afford an upgrade
-function canAffordUpgrade(upgrade: Item): boolean {
-  return counter >= upgrade.currentCost;
-}
-
 // Purchase an upgrade
 function purchaseUpgrade(upgrade: Item) {
   counter -= upgrade.currentCost;
   growthRate += upgrade.rate;
   upgrade.count++;
-  upgrade.currentCost *= 1.15;
+  upgrade.currentCost *= Math.round(upgrade.currentCost * 1.15);
 }
 
 // Update UI after purchasing an upgrade
@@ -139,9 +129,9 @@ function updateUIAfterPurchase(
   upgradeButton: HTMLButtonElement
 ) {
   counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
-  growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(0)} Teddy Bears/sec`;
+  growthRateDiv.textContent = `Growth Rate: ${Math.floor(growthRate)} Teddy Bears/sec`;
   upgradeCountDiv.textContent = `${upgrade.name} Count: ${upgrade.count}`;
-  upgradeButton.textContent = `Buy ${upgrade.name} (${formatCost(upgrade.currentCost)} Teddy Bears)`;
+  upgradeButton.textContent = `Buy ${upgrade.name} (${upgrade.currentCost} Teddy Bears)`;
 }
 
 // Create upgrade rows
@@ -151,7 +141,7 @@ upgrades.forEach((upgrade, index) => {
   upgradeContainer.append(upgradeRow);
 
   const upgradeButton = document.createElement("button");
-  upgradeButton.textContent = `Buy ${upgrade.name} (${formatCost(upgrade.currentCost)} Teddy Bears)`;
+  upgradeButton.textContent = `Buy ${upgrade.name} (${upgrade.currentCost} Teddy Bears)`;
   upgradeButton.id = `upgrade-button-${index}`;
   upgradeButton.classList.add("upgrade-button"); // apply CSS class
   upgradeButton.disabled = true;
@@ -171,7 +161,7 @@ upgrades.forEach((upgrade, index) => {
 
   // Add event listener for purchasing upgrades
   upgradeButton.addEventListener("click", () => {
-    if (canAffordUpgrade(upgrade)) {
+    if (counter >= upgrade.currentCost) {
       purchaseUpgrade(upgrade);
       updateUIAfterPurchase(upgrade, upgradeCountDiv, upgradeButton);
       checkUpgradeButtons();
