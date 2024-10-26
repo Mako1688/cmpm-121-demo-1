@@ -10,7 +10,7 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
-// Create counter
+// Create variables and interfaces
 let counter: number = 0;
 let growthRate: number = 0;
 
@@ -22,6 +22,8 @@ interface Item {
   currentCost: number;
   description: string;
 }
+
+// List of upgrade items
 const upgrades: Item[] = [
   {
     name: "Teddy Poacher 🕵️",
@@ -77,7 +79,7 @@ const upgrades: Item[] = [
     rate: 50000000,
     count: 0,
     currentCost: 10000000000,
-    description: "Recruit the God of Teddy Bears and use it's power",
+    description: "Recruit the God of Teddy Bears and use its power",
   },
 ];
 
@@ -87,39 +89,42 @@ counterDiv.id = "counter";
 counterDiv.textContent = `${counter} Teddy Bears`;
 app.append(counterDiv);
 
+// Create div to display growth rate
 const growthRateDiv = document.createElement("div");
 growthRateDiv.id = "growth-rate";
 growthRateDiv.textContent = `Growth Rate: ${growthRate} Teddy Bears/sec`;
 app.append(growthRateDiv);
 
-// Create button element
+// Create button element for manual clicks
 const button = document.createElement("button");
-// Set button text
 button.textContent = "🧸";
 button.id = "teddy-button";
 button.classList.add("teddy-button"); // apply CSS class
 app.append(button);
-// Add listening event
+
+// Add event listener for manual clicks
 button.addEventListener("click", () => {
   counter++;
   counterDiv.textContent = `${counter} Teddy Bears`;
   checkUpgradeButtons();
 });
 
+// Container for upgrade items
 const upgradeContainer = document.createElement("div");
 upgradeContainer.id = "upgrade-container";
 app.append(upgradeContainer);
 
+// Format cost to remove trailing zeros
 function formatCost(cost: number): string {
-  return cost % 1 === 0
-    ? cost.toString()
-    : cost.toFixed(0).replace(/\.?0+$/, "");
+  return cost % 1 === 0 ? cost.toString() : cost.toFixed(0).replace(/\.?0+$/, "");
 }
 
+// Check if the player can afford an upgrade
 function canAffordUpgrade(upgrade: Item): boolean {
   return counter >= upgrade.currentCost;
 }
 
+// Purchase an upgrade
 function purchaseUpgrade(upgrade: Item) {
   counter -= upgrade.currentCost;
   growthRate += upgrade.rate;
@@ -127,6 +132,7 @@ function purchaseUpgrade(upgrade: Item) {
   upgrade.currentCost *= 1.15;
 }
 
+// Update UI after purchasing an upgrade
 function updateUIAfterPurchase(
   upgrade: Item,
   upgradeCountDiv: HTMLDivElement,
@@ -138,6 +144,7 @@ function updateUIAfterPurchase(
   upgradeButton.textContent = `Buy ${upgrade.name} (${formatCost(upgrade.currentCost)} Teddy Bears)`;
 }
 
+// Create upgrade rows
 upgrades.forEach((upgrade, index) => {
   const upgradeRow = document.createElement("div");
   upgradeRow.classList.add("upgrade-row");
@@ -162,6 +169,7 @@ upgrades.forEach((upgrade, index) => {
   upgradeDescriptionDiv.textContent = upgrade.description;
   upgradeRow.append(upgradeDescriptionDiv);
 
+  // Add event listener for purchasing upgrades
   upgradeButton.addEventListener("click", () => {
     if (canAffordUpgrade(upgrade)) {
       purchaseUpgrade(upgrade);
@@ -171,6 +179,7 @@ upgrades.forEach((upgrade, index) => {
   });
 });
 
+// Check if upgrade buttons should be enabled
 function checkUpgradeButtons() {
   upgrades.forEach((upgrade, index) => {
     const upgradeButton = document.getElementById(
@@ -182,6 +191,7 @@ function checkUpgradeButtons() {
 
 checkUpgradeButtons();
 
+// Create a teddy element with specified class, emoji, and size
 function createTeddyElement(
   className: string,
   emoji: string,
@@ -228,7 +238,7 @@ function spawnGoldenTeddy() {
 // Function to randomly spawn a golden teddy bear
 function maybeSpawnGoldenTeddy() {
   if (Math.random() < 0.005) {
-    // 1% chance to spawn a golden teddy
+    // 0.5% chance to spawn a golden teddy every frame
     spawnGoldenTeddy();
   }
 }
@@ -247,7 +257,7 @@ function updateCounter(currentTime: number) {
   // Check if the upgrade buttons should be enabled
   checkUpgradeButtons();
 
-  // Maybe spawn a golden teddy bear
+  // Maybe spawn a golden teddy bear every frame
   maybeSpawnGoldenTeddy();
 
   requestAnimationFrame(updateCounter);
