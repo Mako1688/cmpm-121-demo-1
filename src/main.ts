@@ -182,33 +182,47 @@ function checkUpgradeButtons() {
 
 checkUpgradeButtons();
 
-// Function to spawn a golden teddy bear
-function spawnGoldenTeddy() {
-  const goldenTeddy = document.createElement("div");
-  goldenTeddy.classList.add("golden-teddy");
-  goldenTeddy.innerHTML = "🧸"; // Use only the teddy emoji
-  goldenTeddy.style.position = "absolute";
-  goldenTeddy.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
-  goldenTeddy.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
-  goldenTeddy.style.fontSize = "50px";
-  goldenTeddy.style.transition = "opacity 3s";
-  goldenTeddy.style.opacity = "1";
-  app.append(goldenTeddy);
+function createTeddyElement(
+  className: string,
+  emoji: string,
+  size: string
+): HTMLDivElement {
+  const teddy = document.createElement("div");
+  teddy.classList.add(className);
+  teddy.innerHTML = emoji;
+  teddy.style.position = "absolute";
+  teddy.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
+  teddy.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+  teddy.style.fontSize = size;
+  return teddy;
+}
 
-  // Event listener for clicking the golden teddy
+function addFadeOutEffect(
+  element: HTMLElement,
+  delay: number,
+  duration: number
+) {
+  setTimeout(() => {
+    element.style.transition = `opacity ${duration}s`;
+    element.style.opacity = "0";
+    setTimeout(() => element.remove(), duration * 1000);
+  }, delay);
+}
+
+function handleGoldenTeddyClick(goldenTeddy: HTMLElement) {
   goldenTeddy.addEventListener("click", () => {
     counter += 10 * growthRate;
     counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
     goldenTeddy.remove();
   });
+}
 
-  // Make the golden teddy fade out and disappear
-  setTimeout(() => {
-    goldenTeddy.style.opacity = "0";
-    setTimeout(() => {
-      goldenTeddy.remove();
-    }, 3000);
-  }, 3000);
+function spawnGoldenTeddy() {
+  const goldenTeddy = createTeddyElement("golden-teddy", "🧸", "50px");
+  app.append(goldenTeddy);
+
+  handleGoldenTeddyClick(goldenTeddy);
+  addFadeOutEffect(goldenTeddy, 3000, 3);
 }
 
 // Function to randomly spawn a golden teddy bear
