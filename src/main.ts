@@ -254,6 +254,10 @@ function updateCounter(currentTime: number) {
   // Maybe spawn a golden teddy bear every frame
   maybeSpawnGoldenTeddy();
 
+  // Update rotation speed based on growth rate
+  const rotationSpeed = growthRate > 0 ? 360 / growthRate : 0;
+  button.style.animationDuration = `${rotationSpeed}s`;
+
   requestAnimationFrame(updateCounter);
 }
 

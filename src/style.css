@@ -29,6 +29,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #e6dec1;
+  color: #5d4037;
 }
 
 h1 {
@@ -50,29 +52,16 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #d2b48c;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #bfa67a;
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+  outline: 5px auto -webkit-focus-ring-color;
 }
 
 .teddy-button {
@@ -80,6 +69,17 @@ button:focus-visible {
   height: 300px; /* Adjust the height as needed */
   font-size: 80px; /* Adjust the font size as needed */
   text-align: center;
+  border-radius: 50%; /* Make the button circular */
+  animation: rotate infinite linear; /* Add infinite rotation animation */
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 #upgrade-container {
@@ -96,7 +96,6 @@ button:focus-visible {
   align-items: center; /* Vertically center all items */
 }
 
-.upgrade-button,
 .upgrade-count,
 .upgrade-description {
   white-space: nowrap; /* Prevent content wrap for consistent baseline alignment */
@@ -109,8 +108,8 @@ button:focus-visible {
 }
 
 .upgrade-count {
-  flex: 0 0 255px; /* Fixed width for count container to ensure alignment */
-  margin-right: 0px;
+  flex: 0 0 260px; /* Fixed width for count container to ensure alignment */
+  margin-right: 5px;
   display: flex;
   justify-content: flex-start; /* Align text to the start of the container */
   grid-column: 2; /* Consistently placed in the second column */
