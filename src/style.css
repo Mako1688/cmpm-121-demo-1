@@ -85,24 +85,42 @@ button:focus-visible {
 #upgrade-container {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Optional: Add some space between the upgrade rows */
+  gap: 5px; /* Optional: Add some space between the upgrade rows */
 }
 
 .upgrade-row {
-  display: grid;
-  grid-template-columns: auto 1fr 2fr; /* Adjust the column widths as needed */
-  align-items: center;
-  gap: 10px; /* Optional: Add some space between elements in the row */
+  display: flex;
+  grid-template-columns: auto auto 1fr; /* Auto columns for buttons and counts, flexible for descriptions */
+  column-gap: 16px; /* Space between columns */
+  margin-bottom: 3px; /* Space between rows */
+  align-items: center; /* Vertically center all items */
+}
+
+.upgrade-button,
+.upgrade-count,
+.upgrade-description {
+  white-space: nowrap; /* Prevent content wrap for consistent baseline alignment */
 }
 
 .upgrade-button {
-  min-width: 150px; /* Adjust the minimum width as needed */
-  text-align: center;
+  flex: 0 0 445px; /* Fixed width for the button */
+  margin-right: 5px;
+  grid-column: 1; /* Consistently placed in the first column */
 }
 
-.upgrade-count,
+.upgrade-count {
+  flex: 0 0 255px; /* Fixed width for count container to ensure alignment */
+  margin-right: 0px;
+  display: flex;
+  justify-content: flex-start; /* Align text to the start of the container */
+  grid-column: 2; /* Consistently placed in the second column */
+}
+
 .upgrade-description {
-  text-align: left; /* Align text to the left */
+  flex-grow: 1; /* Let the description take the remaining space */
+  display: flex;
+  justify-content: flex-start; /* Align text to the start */
+  grid-column: 3; /* Always starts in the third column */
 }
 
 .golden-teddy {

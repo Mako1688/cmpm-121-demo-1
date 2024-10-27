@@ -119,7 +119,7 @@ function purchaseUpgrade(upgrade: Item) {
   counter -= upgrade.currentCost;
   growthRate += upgrade.rate;
   upgrade.count++;
-  upgrade.currentCost = Math.round(upgrade.currentCost * 1.15);
+  upgrade.currentCost = Math.round(upgrade.currentCost * 1.1);
 }
 
 // Update UI after purchasing an upgrade
@@ -211,7 +211,11 @@ function addFadeOutEffect(
 
 function handleGoldenTeddyClick(goldenTeddy: HTMLElement) {
   goldenTeddy.addEventListener("click", () => {
-    counter += 10 * growthRate;
+    if (growthRate > 0) {
+      counter += growthRate * 10;
+    } else {
+      counter += 1;
+    }
     counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
     goldenTeddy.remove();
   });
