@@ -103,9 +103,10 @@ button.classList.add("teddy-button"); // apply CSS class
 app.append(button);
 
 // Add event listener for manual clicks
-button.addEventListener("click", () => {
+button.addEventListener("click", (event) => {
   counter++;
   counterDiv.textContent = `${counter} Teddy Bears`;
+  showPopText("+1", event.clientX, event.clientY);
   checkUpgradeButtons();
 });
 
@@ -160,10 +161,15 @@ upgrades.forEach((upgrade, index) => {
   upgradeRow.append(upgradeDescriptionDiv);
 
   // Add event listener for purchasing upgrades
-  upgradeButton.addEventListener("click", () => {
+  upgradeButton.addEventListener("click", (event) => {
     if (counter >= upgrade.currentCost) {
       purchaseUpgrade(upgrade);
       updateUIAfterPurchase(upgrade, upgradeCountDiv, upgradeButton);
+      showPopText(
+        `+${upgrade.rate} Teddy Bears/sec`,
+        event.clientX,
+        event.clientY
+      );
       checkUpgradeButtons();
     }
   });
@@ -209,15 +215,24 @@ function addFadeOutEffect(
   }, delay);
 }
 
+function showPopText(text: string, x: number, y: number) {
+  const popText = document.createElement("div");
+  popText.classList.add("fade-up");
+  popText.textContent = text;
+  popText.style.left = `${x}px`;
+  popText.style.top = `${y}px`;
+  app.append(popText);
+  setTimeout(() => popText.remove(), 2000); // Remove after animation
+}
+
 function handleGoldenTeddyClick(goldenTeddy: HTMLElement) {
-  goldenTeddy.addEventListener("click", () => {
-    if (growthRate > 0) {
-      counter += growthRate * 10;
-    } else {
-      counter += 1;
-    }
+  goldenTeddy.addEventListener("click", (event) => {
+    const amount = growthRate > 0 ? growthRate * 10 : 1;
+    counter += amount;
     counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
-    goldenTeddy.remove();
+    goldenTeddy.style.animation = "pop 0.5s forwards"; // Apply pop animation
+    setTimeout(() => goldenTeddy.remove(), 500); // Remove after animation
+    showPopText(`+${amount}`, event.clientX, event.clientY); // Show the "+X" text at the click position
   });
 }
 
