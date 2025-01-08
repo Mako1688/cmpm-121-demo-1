@@ -156,7 +156,7 @@ function purchaseUpgrade(upgrade: Item) {
 function updateUIAfterPurchase(
   upgrade: Item,
   upgradeCountDiv: HTMLDivElement,
-  upgradeButton: HTMLButtonElement
+  upgradeButton: HTMLButtonElement,
 ) {
   counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
   growthRateDiv.textContent = `Growth Rate: ${Math.floor(growthRate)} Teddy Bears/sec`;
@@ -197,7 +197,7 @@ upgrades.forEach((upgrade, index) => {
       showPopText(
         `+${upgrade.rate} Teddy Bears/sec`,
         event.clientX,
-        event.clientY
+        event.clientY,
       );
       checkUpgradeButtons();
     }
@@ -208,7 +208,7 @@ upgrades.forEach((upgrade, index) => {
 function checkUpgradeButtons() {
   upgrades.forEach((upgrade, index) => {
     const upgradeButton = document.getElementById(
-      `upgrade-button-${index}`
+      `upgrade-button-${index}`,
     ) as HTMLButtonElement;
     upgradeButton.disabled = counter < upgrade.currentCost;
   });
@@ -220,7 +220,7 @@ checkUpgradeButtons();
 function createTeddyElement(
   className: string,
   emoji: string,
-  size: string
+  size: string,
 ): HTMLDivElement {
   const teddy = document.createElement("div");
   teddy.classList.add(className);
@@ -235,7 +235,7 @@ function createTeddyElement(
 function addFadeOutEffect(
   element: HTMLElement,
   delay: number,
-  duration: number
+  duration: number,
 ) {
   setTimeout(() => {
     element.style.transition = `opacity ${duration}s`;
@@ -311,7 +311,7 @@ loadGameState();
 updateUIAfterPurchase(
   upgrades[0],
   document.getElementById(`upgrade-count-0`) as HTMLDivElement,
-  document.getElementById(`upgrade-button-0`) as HTMLButtonElement
+  document.getElementById(`upgrade-button-0`) as HTMLButtonElement,
 );
 
 // Start the animation frame loop
