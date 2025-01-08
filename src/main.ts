@@ -83,6 +83,33 @@ const upgrades: Item[] = [
   },
 ];
 
+// Load game state from local storage
+function loadGameState() {
+  const savedState = localStorage.getItem("teddyTycoonState");
+  if (savedState) {
+    const state = JSON.parse(savedState);
+    counter = state.counter;
+    growthRate = state.growthRate;
+    state.upgrades.forEach((savedUpgrade: Item, index: number) => {
+      upgrades[index].count = savedUpgrade.count;
+      upgrades[index].currentCost = savedUpgrade.currentCost;
+    });
+  }
+}
+
+// Save game state to local storage
+function saveGameState() {
+  const state = {
+    counter,
+    growthRate,
+    upgrades: upgrades.map((upgrade) => ({
+      count: upgrade.count,
+      currentCost: upgrade.currentCost,
+    })),
+  };
+  localStorage.setItem("teddyTycoonState", JSON.stringify(state));
+}
+
 // Create div to display counter
 const counterDiv = document.createElement("div");
 counterDiv.id = "counter";
@@ -108,6 +135,7 @@ button.addEventListener("click", (event) => {
   counterDiv.textContent = `${counter} Teddy Bears`;
   showPopText("+1", event.clientX, event.clientY);
   checkUpgradeButtons();
+  saveGameState();
 });
 
 // Container for upgrade items
@@ -121,6 +149,7 @@ function purchaseUpgrade(upgrade: Item) {
   growthRate += upgrade.rate;
   upgrade.count++;
   upgrade.currentCost = Math.round(upgrade.currentCost * 1.1);
+  saveGameState();
 }
 
 // Update UI after purchasing an upgrade
@@ -233,6 +262,7 @@ function handleGoldenTeddyClick(goldenTeddy: HTMLElement) {
     goldenTeddy.style.animation = "pop 0.5s forwards"; // Apply pop animation
     setTimeout(() => goldenTeddy.remove(), 500); // Remove after animation
     showPopText(`+${amount}`, event.clientX, event.clientY); // Show the "+X" text at the click position
+    saveGameState();
   });
 }
 
@@ -275,6 +305,14 @@ function updateCounter(currentTime: number) {
 
   requestAnimationFrame(updateCounter);
 }
+
+// Load game state when the game starts
+loadGameState();
+updateUIAfterPurchase(
+  upgrades[0],
+  document.getElementById(`upgrade-count-0`) as HTMLDivElement,
+  document.getElementById(`upgrade-button-0`) as HTMLButtonElement
+);
 
 // Start the animation frame loop
 requestAnimationFrame(updateCounter);
