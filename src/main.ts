@@ -13,6 +13,7 @@ app.append(header);
 // Create variables and interfaces
 let counter: number = 0;
 let growthRate: number = 0;
+let lastSavedTime: number = Date.now();
 
 interface Item {
   name: string;
@@ -90,6 +91,9 @@ function loadGameState() {
     const state = JSON.parse(savedState);
     counter = state.counter;
     growthRate = state.growthRate;
+    lastSavedTime = state.lastSavedTime || Date.now();
+    const timeElapsed = (Date.now() - lastSavedTime) / 1000;
+    counter += growthRate * timeElapsed;
     state.upgrades.forEach((savedUpgrade: Item, index: number) => {
       upgrades[index].count = savedUpgrade.count;
       upgrades[index].currentCost = savedUpgrade.currentCost;
@@ -102,6 +106,7 @@ function saveGameState() {
   const state = {
     counter,
     growthRate,
+    lastSavedTime: Date.now(),
     upgrades: upgrades.map((upgrade) => ({
       count: upgrade.count,
       currentCost: upgrade.currentCost,
@@ -156,7 +161,7 @@ function purchaseUpgrade(upgrade: Item) {
 function updateUIAfterPurchase(
   upgrade: Item,
   upgradeCountDiv: HTMLDivElement,
-  upgradeButton: HTMLButtonElement,
+  upgradeButton: HTMLButtonElement
 ) {
   counterDiv.textContent = `${Math.floor(counter)} Teddy Bears`;
   growthRateDiv.textContent = `Growth Rate: ${Math.floor(growthRate)} Teddy Bears/sec`;
@@ -197,7 +202,7 @@ upgrades.forEach((upgrade, index) => {
       showPopText(
         `+${upgrade.rate} Teddy Bears/sec`,
         event.clientX,
-        event.clientY,
+        event.clientY
       );
       checkUpgradeButtons();
     }
@@ -208,7 +213,7 @@ upgrades.forEach((upgrade, index) => {
 function checkUpgradeButtons() {
   upgrades.forEach((upgrade, index) => {
     const upgradeButton = document.getElementById(
-      `upgrade-button-${index}`,
+      `upgrade-button-${index}`
     ) as HTMLButtonElement;
     upgradeButton.disabled = counter < upgrade.currentCost;
   });
@@ -220,7 +225,7 @@ checkUpgradeButtons();
 function createTeddyElement(
   className: string,
   emoji: string,
-  size: string,
+  size: string
 ): HTMLDivElement {
   const teddy = document.createElement("div");
   teddy.classList.add(className);
@@ -235,7 +240,7 @@ function createTeddyElement(
 function addFadeOutEffect(
   element: HTMLElement,
   delay: number,
-  duration: number,
+  duration: number
 ) {
   setTimeout(() => {
     element.style.transition = `opacity ${duration}s`;
@@ -308,11 +313,17 @@ function updateCounter(currentTime: number) {
 
 // Load game state when the game starts
 loadGameState();
-updateUIAfterPurchase(
-  upgrades[0],
-  document.getElementById(`upgrade-count-0`) as HTMLDivElement,
-  document.getElementById(`upgrade-button-0`) as HTMLButtonElement,
-);
+
+// Update UI for all upgrades after loading the game state
+upgrades.forEach((upgrade, index) => {
+  const upgradeCountDiv = document.getElementById(
+    `upgrade-count-${index}`
+  ) as HTMLDivElement;
+  const upgradeButton = document.getElementById(
+    `upgrade-button-${index}`
+  ) as HTMLButtonElement;
+  updateUIAfterPurchase(upgrade, upgradeCountDiv, upgradeButton);
+});
 
 // Start the animation frame loop
 requestAnimationFrame(updateCounter);
